@@ -2,15 +2,17 @@ import argparse
 
 import flask
 import torch
-from allennlp.common.file_utils import cached_path
-from allennlp.models.archival import load_archive
-from allennlp.predictors import Predictor
 from pytorch_pretrained_bert import BertForQuestionAnswering, BertTokenizer, BertConfig
 from torch.utils.data import DataLoader, SequentialSampler, TensorDataset
 
 from iterator import convert_examples_to_features, write_predictions, SquadExample
 import json
 import collections
+
+import os
+import sys
+
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 
 def predict(model, tokenizer, item):
@@ -78,18 +80,25 @@ def predict(model, tokenizer, item):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser("")
     parser.add_argument("port", type=int)
-    parser.add_argument("--model_path", type=str, default="../config/save/base_0_1.230",help="pretrained model path")
-    parser.add_argument("--vocab_file", type=str, default="../config/vocab.txt", help="vocab file path")
-    parser.add_argument("--config_file", type=str, default="../config/bert_base_config.json", help="config file path")
+    parser.add_argument("--model_path", type=str, default="./config/save/base_0_1.230",help="pretrained model path")
+    parser.add_argument("--vocab_file", type=str, default="./config/vocab.txt", help="vocab file path")
+    parser.add_argument("--config_file", type=str, default="./config/bert_base_config.json", help="config file path")
     args = parser.parse_args()
 
     if torch.cuda.is_available():
         device = torch.device("cuda")
     else:
         device = torch.device("cpu")
+    
     config = BertConfig(args.config_file)
     model = BertForQuestionAnswering(config)
-    state_dict = torch.load(args.model_path)
+
+    # This part also have to be checked whether we are using the gpu or nots
+    if torch.cuda.is_available():
+        state_dict = torch.load(args.model_path)
+    else:
+        state_dict = torch.load(args.model_path, map_location='cpu')
+
     model.load_state_dict(state_dict)
     # check whether there's avaible gpu device
     model = model.to(device)
