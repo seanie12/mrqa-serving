@@ -80,14 +80,17 @@ def predict(model, tokenizer, item):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser("")
     parser.add_argument("port", type=int)
+    # TODO: Model 파일이 매번 달라질 것이므로, 입력으로 받던지, 매번 동일한 모델이름으로 넣을 것인지 결정하기
     parser.add_argument("--model_path", type=str, default="./config/save/base_0_1.230",help="pretrained model path")
     parser.add_argument("--vocab_file", type=str, default="./config/vocab.txt", help="vocab file path")
     parser.add_argument("--config_file", type=str, default="./config/bert_base_config.json", help="config file path")
     args = parser.parse_args()
 
     if torch.cuda.is_available():
+        print("Using GPU...")
         device = torch.device("cuda")
     else:
+        print("Using CPU...")
         device = torch.device("cpu")
     
     config = BertConfig(args.config_file)
