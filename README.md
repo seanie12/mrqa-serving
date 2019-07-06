@@ -8,9 +8,8 @@
   ```
   $ docker login
   $ cd docker
-  $ docker build -t mrqa .
-  $ docker tag mrqa adieujw/mrqa:v1
-  $ docker push adieujw/mrqa:v1
+  $ docker build -t adieujw/mrqa:latest .
+  $ docker push adieujw/mrqa:latest
   ```
 
   - 용량은 대략 2GB
