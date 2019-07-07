@@ -8,8 +8,8 @@
   ```
   $ docker login
   $ cd docker
-  $ docker build -t adieujw/mrqa:latest .
-  $ docker push adieujw/mrqa:latest
+  $ docker build -t adieujw/mrqa:1.0 .
+  $ docker push adieujw/mrqa:1.0
   ```
 
   - 용량은 대략 2GB
@@ -42,7 +42,7 @@
 
 4. dev set에서 prediction 진행(run-predictions.sh)
     - **만일 3번 단계를 건너뛰고 4번으로 올 경우에는 반드시 cl work <worksheet_name>을 해줘야 함**
-    - Docker: adieujw/mrqa:latest
+    - Docker: adieujw/mrqa:1.0
         - 해당 도커파일은 기본적으로 codalab/default-gpu를 가져와서 내용 추가함
         - https://github.com/codalab/codalab-worksheets/blob/master/docker/dockerfiles/Dockerfile.default-gpu
     - 이 bundle의 이름은 run-predictions로 설정함

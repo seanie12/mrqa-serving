@@ -1,5 +1,5 @@
 # File Name, settings etc.
-DOCKER_NAME="adieujw/mrqa:latest"
+DOCKER_NAME="adieujw/mrqa:1.0"
 PORT_NUM="8888"
 
 ############################## RUN ###############################
