@@ -44,4 +44,4 @@ RUN pip3 install -U \
     torch \
     torchvision
 
-RUN pip3 install pytorch-pretrained-bert flask json-lines
+RUN pip3 install -U pytorch-pretrained-bert flask json-lines allennlp

@@ -108,3 +108,4 @@ venv.bak/
 config/save/
 .vscode/
 .idea/
+.DS_Store
