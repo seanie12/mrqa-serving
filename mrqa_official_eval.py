@@ -12,7 +12,6 @@ import string
 import re
 import json
 import gzip
-import sys
 from collections import Counter
 from allennlp.common.file_utils import cached_path
 
@@ -68,26 +67,28 @@ def read_predictions(prediction_file):
 
 def read_answers(gold_file):
     answers = {}
-    with gzip.open(gold_file, 'rb') as f:
-        for i, line in enumerate(f):
-            example = json.loads(line)
-            if i == 0 and 'header' in example:
-                continue
-            for qa in example['qas']:
-                answers[qa['qid']] = qa['answers']
+    if gold_file.endswith('.gz'):
+        f = gzip.open(gold_file, 'rb')
+    else:
+        f = open(gold_file)
+    for i, line in enumerate(f):
+        example = json.loads(line)
+        if i == 0 and 'header' in example:
+            continue
+        for qa in example['qas']:
+            answers[qa['qid']] = qa['answers']
+    f.close()
     return answers
 
 
-def evaluate(answers, predictions, skip_no_answer=False):
+def evaluate(answers, predictions):
     f1 = exact_match = total = 0
     for qid, ground_truths in answers.items():
-        if qid not in predictions:
-            if not skip_no_answer:
-                message = 'Unanswered question %s will receive score 0.' % qid
-                print(message)
-                total += 1
-            continue
         total += 1
+        if qid not in predictions:
+            message = 'Unanswered question %s will receive score 0.' % qid
+            print(message)
+            continue
         prediction = predictions[qid]
         exact_match += metric_max_over_ground_truths(
             exact_match_score, prediction, ground_truths)
@@ -105,11 +106,10 @@ if __name__ == '__main__':
         description='Evaluation for MRQA Workshop Shared Task')
     parser.add_argument('dataset_file', type=str, help='Dataset File')
     parser.add_argument('prediction_file', type=str, help='Prediction File')
-    parser.add_argument('--skip-no-answer', action='store_true')
     args = parser.parse_args()
 
     answers = read_answers(cached_path(args.dataset_file))
     predictions = read_predictions(cached_path(args.prediction_file))
-    metrics = evaluate(answers, predictions, args.skip_no_answer)
+    metrics = evaluate(answers, predictions)
 
     print(json.dumps(metrics))
