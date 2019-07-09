@@ -18,10 +18,12 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 def predict(model, tokenizer, item):
     """
     param model: pytorch pre-trained model
-    param tokenzier : tokenizer for convert_examples_to_features
+    param tokenizer : tokenizer for convert_examples_to_features
     param item : json_obj
     """
+    # for the given passage, there are multiple questions (1 ~ many)
     doc_tokens = []
+    eval_examples = []
     for token in item['context_tokens']:
         # BERT has only [SEP] in it's word piece vocabulary. because we keps all separators char length 5
         # we can replace all of them with [SEP] without modifying the offset
@@ -41,7 +43,9 @@ def predict(model, tokenizer, item):
             orig_answer_text=None,
             start_position=None,
             end_position=None)
-    eval_examples = [example]  # item has only one instance
+
+        eval_examples.append(example)
+
     eval_features = convert_examples_to_features(eval_examples, tokenizer, max_seq_length=384,
                                                  doc_stride=128, max_query_length=64, is_training=False)
 
@@ -82,7 +86,8 @@ if __name__ == "__main__":
     parser.add_argument("port", type=int)
     # TODO: Model 파일이 매번 달라질 것이므로, 입력으로 받던지, 매번 동일한 모델이름으로 넣을 것인지 결정하기
     weight_file_name = os.listdir('./config/save/')[0]
-    parser.add_argument("--model_path", type=str, default="./config/save/{}".format(weight_file_name),help="pretrained model path")
+    parser.add_argument("--model_path", type=str, default="./config/save/{}".format(weight_file_name),
+                        help="pre-trained model path")
     parser.add_argument("--vocab_file", type=str, default="./config/vocab.txt", help="vocab file path")
     parser.add_argument("--config_file", type=str, default="./config/bert_base_config.json", help="config file path")
     args = parser.parse_args()
@@ -93,7 +98,7 @@ if __name__ == "__main__":
     else:
         print("Using CPU...")
         device = torch.device("cpu")
-    
+
     config = BertConfig(args.config_file)
     model = BertForQuestionAnswering(config)
 
@@ -110,10 +115,12 @@ if __name__ == "__main__":
     tokenizer = BertTokenizer(args.vocab_file)
     app = flask.Flask(__name__)
 
+
     @app.route('/', methods=['POST'])
     def index():
         json_obj = flask.request.get_json()
         pred = predict(model, tokenizer, json_obj)
         return pred
+
 
     app.run(port=args.port)

@@ -186,7 +186,7 @@ def read_squad_examples(input_file, debug=False):
         # 1. Get Context
         doc_tokens = []
         for token in item['context_tokens']:
-            # BERT has only [SEP] in it's word piece vocabulary. because we keps all separators char length 5
+            # BERT has only [SEP] in it's word piece vocabulary. because we kept all separators char length 5
             # we can replace all of them with [SEP] without modifying the offset
             if token[0] in ['[TLE]', '[PAR]', '[DOC]']:
                 token[0] = '[SEP]'
