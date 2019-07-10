@@ -1,0 +1,6 @@
+[BioASQ] orig: 62.7 result: 43.4
+[DROP] orig: 34.5 result: 19.7
+[DuoRC] orig: 54.6 result: 44.4
+[RACE] orig: 41.4 result: 29.5
+[RelationExtraction] orig: 83.8 result: 77.6
+[TextbookQA] orig: 53.9 result: 45.0
