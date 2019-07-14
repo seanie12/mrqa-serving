@@ -25,7 +25,7 @@ CODALAB_ARGS="$CODALAB_ARGS :src"                                # Src folder (s
 CODALAB_ARGS="$CODALAB_ARGS :config"                             # Config folder (parameters)
 
 ### Command to execute (these flags can be overridden) from the command-line
-CMD="python3.6 src/serve.py $PORT_NUM & python3.6 predict_server.py <(cat data_dir/*.jsonl) predictions.json $PORT_NUM; for data_file in \`ls data_dir/*.jsonl\`; do base=\$(echo \${data_file} | cut -d \"/\" -f2); python3.6 mrqa_official_eval.py \${data_file} predictions.json > eval_\${base::-1}; done"
+CMD="python3.6 src/serve.py $PORT_NUM & python3.6 predict_server.py <(cat data_dir/*.jsonl) predictions.json $PORT_NUM"
 
 # Pass the command-line arguments through to override the above
 # if [ -n "$1" ]; then

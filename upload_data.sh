@@ -1,6 +1,6 @@
 #!/bin/bash
 # File Name, settings etc.
-WORKSHEET_NAME="lolro-test01"
+WORKSHEET_NAME="monologg-mrqa-test02"
 
 ####################### Basic preparation #######################
 # 1. Switch the worksheet
