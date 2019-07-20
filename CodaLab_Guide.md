@@ -25,3 +25,5 @@
 - 한국어 튜토리얼: [https://github.com/graykode/KorQuAD-beginner](https://github.com/graykode/KorQuAD-beginner)
 
 - Docker와 Codalab 연동법: [https://github.com/codalab/codalab-worksheets/wiki/Execution](https://github.com/codalab/codalab-worksheets/wiki/Execution)
+
+- Bundle Link 보내는 법: [http://www.zhuhao.me/fewrel/codalab.html](http://www.zhuhao.me/fewrel/codalab.html)
