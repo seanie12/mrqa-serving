@@ -91,7 +91,8 @@ if __name__ == "__main__":
                         help="pre-trained model path")
     parser.add_argument("--vocab_file", type=str, default="./config/vocab.txt", help="vocab file path")
     parser.add_argument("--config_file", type=str, default="./config/bert_base_config.json", help="config file path")
-    parser.add_argument("--use_adv", action="store_true", help="whether to use adversarially regularized model")
+    parser.add_argument("--use_adv", default=True, type=bool, help="whether to use adversarially regularized model")
+    parser.add_argument("--use_conv", action="store_true", help="whether to use conv discriminator")
     args = parser.parse_args()
 
     if torch.cuda.is_available():
@@ -103,7 +104,7 @@ if __name__ == "__main__":
 
     config = BertConfig(args.config_file)
     if args.use_adv:
-        model = DomainQA(config)
+        model = DomainQA(config, use_conv=args.use_conv)
     else:
         model = BertForQuestionAnswering(config)
 
