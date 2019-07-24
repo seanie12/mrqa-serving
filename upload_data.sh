@@ -1,6 +1,6 @@
 #!/bin/bash
 # File Name, settings etc.
-WORKSHEET_NAME="monologg-mrqa-test02"
+WORKSHEET_NAME="mrqa-adversarial"
 
 ####################### Basic preparation #######################
 # 1. Switch the worksheet

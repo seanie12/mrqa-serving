@@ -1,0 +1,2 @@
+#!/bin/bash
+cl run --name run-evaluation --request-docker-image adieujw/mrqa:1.0 :mrqa-dev-data :run-predictions :mrqa_official_eval.py "for data_file in `ls mrqa-dev-data/*.jsonl`; do base=$(echo ${data_file} | cut -d "/" -f2); python3.6 mrqa_official_eval.py ${data_file} run-predictions/predictions.json> eval_${base%%.*}.json; done"
