@@ -3,6 +3,7 @@ import argparse
 import flask
 import torch
 from pytorch_pretrained_bert import BertForQuestionAnswering, BertTokenizer, BertConfig
+from model import DomainQA
 from torch.utils.data import DataLoader, SequentialSampler, TensorDataset
 
 from iterator import convert_examples_to_features, write_predictions, SquadExample
@@ -90,6 +91,7 @@ if __name__ == "__main__":
                         help="pre-trained model path")
     parser.add_argument("--vocab_file", type=str, default="./config/vocab.txt", help="vocab file path")
     parser.add_argument("--config_file", type=str, default="./config/bert_base_config.json", help="config file path")
+    parser.add_argument("--use_adv", action="store_true", help="whether to use adversarially regularized model")
     args = parser.parse_args()
 
     if torch.cuda.is_available():
@@ -100,7 +102,10 @@ if __name__ == "__main__":
         device = torch.device("cpu")
 
     config = BertConfig(args.config_file)
-    model = BertForQuestionAnswering(config)
+    if args.use_adv:
+        model = DomainQA(config)
+    else:
+        model = BertForQuestionAnswering(config)
 
     # This part also have to be checked whether we are using the gpu or nots
     if torch.cuda.is_available():
