@@ -93,6 +93,7 @@ if __name__ == "__main__":
     parser.add_argument("--config_file", type=str, default="./config/bert_base_config.json", help="config file path")
     parser.add_argument("--use_adv", default=True, type=bool, help="whether to use adversarially regularized model")
     parser.add_argument("--use_conv", action="store_true", help="whether to use conv discriminator")
+
     args = parser.parse_args()
 
     if torch.cuda.is_available():
@@ -103,8 +104,17 @@ if __name__ == "__main__":
         device = torch.device("cpu")
 
     config = BertConfig(args.config_file)
+    if "large" in args.config_file:
+        print("large model")
+        hidden_size = 1024
+    else:
+        print("base model")
+        hidden_size = 768
+
     if args.use_adv:
-        model = DomainQA(config, use_conv=args.use_conv)
+        model = DomainQA(config,
+                         hidden_size=hidden_size,
+                         use_conv=args.use_conv)
     else:
         model = BertForQuestionAnswering(config)
 
