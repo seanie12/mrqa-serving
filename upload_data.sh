@@ -1,6 +1,6 @@
 #!/bin/bash
 # File Name, settings etc.
-WORKSHEET_NAME="mrqa-adversarial"
+WORKSHEET_NAME="mrqa-bert-large-adv"
 
 ####################### Basic preparation #######################
 # 1. Switch the worksheet

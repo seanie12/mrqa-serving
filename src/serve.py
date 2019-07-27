@@ -89,8 +89,8 @@ if __name__ == "__main__":
     weight_file_name = os.listdir('./config/save/')[0]
     parser.add_argument("--model_path", type=str, default="./config/save/{}".format(weight_file_name),
                         help="pre-trained model path")
-    parser.add_argument("--vocab_file", type=str, default="./config/vocab.txt", help="vocab file path")
-    parser.add_argument("--config_file", type=str, default="./config/bert_base_config.json", help="config file path")
+    parser.add_argument("--vocab_file", type=str, default="./config/large_vocab.txt", help="vocab file path")
+    parser.add_argument("--config_file", type=str, default="./config/bert_large_config.json", help="config file path")
     parser.add_argument("--use_adv", default=True, type=bool, help="whether to use adversarially regularized model")
     parser.add_argument("--use_conv", action="store_true", help="whether to use conv discriminator")
 
